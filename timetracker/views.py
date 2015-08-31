@@ -10,18 +10,39 @@ import operator
 def history(request):
     d = datetime.date.today()
     e = Employee.objects.get(user = request.user)
-    ts = TimeSheet.objects.filter(employee= e).filter(date__lte=d).order_by('-date')
-    return render(request, 'history.html', {"ts": ts})
+    p = e.projects.all()
+    if 'pChoice' not in request.POST:
+        prjt = p[0] 
+    else:
+        prjtString = request.POST['pChoice']
+        prjt = Project.objects.get(name = prjtString)
+    ts = TimeSheet.objects.filter(employee= e).filter(date__lte=d).filter(project = prjt).order_by('-date')
+    return render(request, 'history.html', {"ts": ts, "p": p, "prjt": prjt})
 
 def timeEntry(request):
     e = Employee.objects.get(user = request.user)
+    p = e.projects.all()
+    rP = request.POST.keys()
+    rP.append(request.POST.values())
+    saveC = ""
+    if 'pChoice' not in request.POST:
+        prjt = p[0] 
+    else:
+        prjtString = request.POST['pChoice']
+        prjt = Project.objects.get(name = prjtString)
+    try:
+        prjt = Project.objects.get(name = request.POST['projectSelected'])
+    except:
+        pass
+    if 'enterTime' in request.POST:
+        saveC = saveTime(request, prjt)
     d = datetime.date.today()
     dHistory = {}
     dL = []
     dH = []
     dM = []
     dA = []
-    ts = TimeSheet.objects.filter(employee= e).filter(date__lte=d)
+    ts = TimeSheet.objects.filter(employee= e).filter(date__lte=d).filter(project= prjt)
     for single_date in (d - datetime.timedelta(n) for n in range(14)):
         if ts.filter(date = single_date).exists():
             sd = ts.get(date= single_date)
@@ -37,7 +58,25 @@ def timeEntry(request):
             dM.append(single_date.strftime('%A'))
             dA.append(single_date.strftime('%Y-%m-%d'))
     zX = zip(dL, dH, dM, dA)
-    return render(request, 'timeEntry.html', {"ts":ts, "tD": dHistory, "zX": zX})
+    return render(request, 'timeEntry.html', {"ts":ts, "tD": dHistory, "zX": zX, "p": prjt, "ps": p, "rP" : rP, "saveC" : saveC})
+
+def saveTime(request, prjt):
+    x = request.POST.keys()
+    y = request.POST.values()
+    u = Employee.objects.get(coreid = request.user.username)
+    pString = request.POST['projectSelected']
+    p = Project.objects.get(name= pString)
+    for d, h in request.POST.iteritems():
+        try:
+            inDate = datetime.datetime.strptime(d, '%Y-%m-%d')
+            obj, created = TimeSheet.objects.get_or_create(employee= u, date=inDate, project=p,
+                  defaults={'hours': h})
+            if not created:
+                obj.hours = h
+                obj.save()
+        except ValueError:
+            pass
+    return 'Successfully updated timesheet for project {pIn}. Last updated {timeIn}'.format(pIn = pString, timeIn = str(datetime.datetime.now()))
 
 def profile(request):
     e = Employee.objects.get(user = request.user)

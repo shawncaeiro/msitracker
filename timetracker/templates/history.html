@@ -8,11 +8,28 @@
 
 <h1>Time Sheet History</h1>
 <br>
+<a href="{% url 'timetracker:profile' %}" class = "btn btn-default btn-sm">{% trans "Leave Time Entry System" %}</a>
+
+<h4>Choose Project:</h4>
+<form action="{% url 'timetracker:history' %}" method="post">
+{% csrf_token %}
+<select name = "pChoice">
+{% for pr in p %}
+  {% if pr == prjt %}
+    <option value={{pr}} selected = "selected">{{pr}}</option>
+  {% else %}
+      <option value={{pr}}>{{pr}}</option>
+    {% endif %}
+{% endfor %}
+</select>
+<input type="submit" name = "selectProject" class="btn btn-primary btn-xs" value="change project" />
+</form>
+
 <table class="table table-hover">
     <thead>
       <tr>
         <th>Date</th>
-        <th>Hours Worked</th>
+        <th>Hours Worked - {{prjt}}</th>
       </tr>
     </thead>
     <tbody>

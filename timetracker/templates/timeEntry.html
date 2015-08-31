@@ -6,20 +6,38 @@
 
 <div class="col-md-4 col-md-offset-4">
 
-<h2>Please enter work history</h2>
+<h2>Time Entry System</h2>
 <br>
-
+<a href="{% url 'timetracker:profile' %}" class = "btn btn-default btn-sm">{% trans "Leave Time Entry System" %}</a>
+<h5>{{saveC}}</h5>
+{{rP}}
+<h4>Choose Project:</h4>
+<form action="{% url 'timetracker:timeEntry' %}" method="post">
+{% csrf_token %}
+<select name = "pChoice">
+{% for pr in ps %}
+	{% if pr == p %}
+		<option value={{pr}} selected = "selected">{{pr}}</option>
+	{% else %}
+  		<option value={{pr}}>{{pr}}</option>
+  	{% endif %}
+{% endfor %}
+</select>
+<input type="submit" name = "selectProject" class="btn btn-primary btn-xs" value="change project" />
+</form>
+<br>
 <table class="table table-hover">
 	<thead>
       <tr>
       	<th>Day</th>
         <th>Date</th>
-        <th>Hours Worked</th>
+        <th>Hours Worked for {{p}}</th>
       </tr>
     </thead>
     <tbody>
-<form action="{% url 'timetracker:index2' %}" method="post">
+<form action="{% url 'timetracker:timeEntry' %}" method="post">
 {% csrf_token %}
+<input type="hidden" name="projectSelected" value={{p}}>
 {% for i, j, k, x in zX %}
 <tr>
 	<td>{{k}}
@@ -27,7 +45,7 @@
     <td><input class="span1" type="text" style="width: 25px" name={{x}} value={{j}}></td>
 </tr>
 {% endfor %}
-<input type="submit" class = "btn btn-success" value="Submit Time Sheet" />
+<input type="submit" name = "enterTime" class = "btn btn-success" value="Submit Time Sheet" />
 </form>
     </tbody>
   </table>
