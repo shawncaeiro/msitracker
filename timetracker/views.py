@@ -6,6 +6,25 @@ from django.views import generic
 import datetime
 from timetracker.models import TimeSheet, Employee, Project, User
 import operator
+from django.db.models import Sum
+
+
+
+def teamHistory(request):
+    e = Employee.objects.get(user = request.user)
+    m = e.manages.all()
+    ts = TimeSheet.objects.none()
+    for sub in m:
+        subTS = TimeSheet.objects.filter(employee= sub).exclude(hours = 0)
+        ts |= subTS
+    ts = ts.order_by('project', '-hours', '-date', 'employee')
+    tT = []
+    tTotal = ts.order_by().values("employee", "project").annotate(dcount= Sum('hours'))
+    for r in tTotal:
+        tEmployee = Employee.objects.get(id = r['employee'])
+        tProject = Project.objects.get(id = r['project'])
+        tT.append((tEmployee, tProject,r['dcount']))
+    return render(request, 'teamHistory.html', {"ts": ts, "tTotal": tT})
 
 def history(request):
     d = datetime.date.today()
