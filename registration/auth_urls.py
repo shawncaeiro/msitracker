@@ -58,7 +58,7 @@ urlpatterns = patterns('',
                        url(r'^password/reset/done/$',
                            auth_views.password_reset_done,
                            name='auth_password_reset_done'),
-                       url(r'^my/prof/done/$',
+                       url(r'^connect/UtoE/$',
                            t_views.index,
                            name='auth_connect'),
 )

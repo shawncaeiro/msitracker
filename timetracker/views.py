@@ -19,7 +19,7 @@ def teamHistory(request):
         ts |= subTS
     ts = ts.order_by('project', '-hours', '-date', 'employee')
     tT = []
-    tTotal = ts.order_by().values("employee", "project").annotate(dcount= Sum('hours'))
+    tTotal = ts.order_by().values("employee", "project").annotate(dcount= Sum('hours')).order_by('-dcount')
     for r in tTotal:
         tEmployee = Employee.objects.get(id = r['employee'])
         tProject = Project.objects.get(id = r['project'])
@@ -30,6 +30,8 @@ def history(request):
     d = datetime.date.today()
     e = Employee.objects.get(user = request.user)
     p = e.projects.all()
+    if p.count() == 0:
+        return render(request, 'unlinkedAccount.html')
     if 'pChoice' not in request.POST:
         prjt = p[0] 
     else:
@@ -119,24 +121,13 @@ def index2(request):
     return render(request, 'index2.html', {"timeS": x, "y" : y})
 
 def index(request):
-    try:
-        e = Employee.objects.get(name = request.user.username)
-    except:
-        pass
-
-    ts = TimeSheet(
-        employee = e,
-        project = Project.objects.get(name= "testP"),
-        week = 1,
-        mon = 2,
-        tues = 2,
-        wed = 3,
-        thurs = 4,
-        fri = 5,
-        sat = 6,
-        sun = 7
-        )
-    #a = request.POST['Monday']
-    a =1
-    ts.save()
-    return render(request, 'index.html', {"a":a})
+    obj, created = Employee.objects.get_or_create(coreid = request.user.username, defaults={'user': request.user})
+    if not created:
+        obj.user = request.user
+        obj.save()
+        aCon = True
+        #aCon = "Automatic account link successful."
+    else:
+        aCon = False
+        #aCon = "Automatic account link unsuccessful. Plase contact administrator to connect account."
+    return render(request, 'profile.html', {'aCon': aCon})

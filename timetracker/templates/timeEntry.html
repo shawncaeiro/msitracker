@@ -7,10 +7,9 @@
 <div class="col-md-4 col-md-offset-4">
 
 <h2>Time Entry System</h2>
-<br>
 <a href="{% url 'timetracker:profile' %}" class = "btn btn-default btn-sm">{% trans "Leave Time Entry System" %}</a>
+<br><br>
 <h5>{{saveC}}</h5>
-{{rP}}
 <h4>Choose Project:</h4>
 <form action="{% url 'timetracker:timeEntry' %}" method="post">
 {% csrf_token %}

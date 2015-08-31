@@ -12,9 +12,8 @@ class Project(models.Model):
 class Employee(models.Model):
     user = models.OneToOneField(User, null=True, blank=True)
     coreid = models.CharField(max_length=100, default = None)
-    department = models.CharField(max_length=100)
-    projects = models.ManyToManyField(Project)
-    manages = models.ManyToManyField('self', null=True, blank=True, symmetrical = False)
+    projects = models.ManyToManyField(Project, blank=True)
+    manages = models.ManyToManyField('self', blank=True, symmetrical = False)
 
     def __unicode__( self ):
         return self.coreid
