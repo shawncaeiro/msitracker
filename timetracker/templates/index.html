@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+<div class="col-md-4 col-md-offset-4">
+Enter Time:
+{{ a }}
+<form action="{% url 'timetracker:index' %}" method="post">
+{% csrf_token %}
+    Sun:\t<input type="text" name="Sunday"/><br>
+    Mon: <input type="text" name="Monday"/><br>
+    Tues: <input type="text" name="Tuesday"/><br>
+    Wed:<input type="text" name="Wednesday"/><br>
+    Thurs: <input type="text" name="Thursday"/><br>
+    Fri:<input type="text" name="Friday"/><br>
+    Sat:<input type="text" name="Saturday"/><br>
+<input type="submit" value="Vote" />
+</form>
+
+</div>
+
+
+
+{% endblock %}

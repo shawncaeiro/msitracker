@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+<br>
+<div class="col-md-4 col-md-offset-4">
+	<h1>Hello, {{ request.user }}.</h1>
+	<br>
+<a href="{% url 'timetracker:history' %}" class = "btn btn-success">{% trans "Time History" %}</a>
+<a href="{% url 'timetracker:timeEntry' %}" class = "btn btn-success">{% trans "Enter Time" %}</a>
+</div>
+
+{% endblock %}
