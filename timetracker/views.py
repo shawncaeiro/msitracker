@@ -8,8 +8,9 @@ from timetracker.models import TimeSheet, Employee, Project, User
 import operator
 
 def history(request):
+    d = datetime.date.today()
     e = Employee.objects.get(user = request.user)
-    ts = TimeSheet.objects.filter(employee= e).filter(date__lte='2015-08-27')
+    ts = TimeSheet.objects.filter(employee= e).filter(date__lte=d).order_by('-date')
     return render(request, 'history.html', {"ts": ts})
 
 def timeEntry(request):
@@ -18,23 +19,46 @@ def timeEntry(request):
     dHistory = {}
     dL = []
     dH = []
-    ts = TimeSheet.objects.filter(employee= e).filter(date__lte='2015-08-27')
+    dM = []
+    dA = []
+    ts = TimeSheet.objects.filter(employee= e).filter(date__lte=d)
     for single_date in (d - datetime.timedelta(n) for n in range(14)):
         if ts.filter(date = single_date).exists():
             sd = ts.get(date= single_date)
             dHistory[single_date] = sd.hours
             dL.append(single_date)
             dH.append(sd.hours)
+            dM.append(single_date.strftime('%A'))
+            dA.append(single_date.strftime('%Y-%m-%d'))
         else:
             dHistory[single_date] = 0
             dL.append(single_date)
             dH.append(0)
-    zX = zip(dL, dH)
+            dM.append(single_date.strftime('%A'))
+            dA.append(single_date.strftime('%Y-%m-%d'))
+    zX = zip(dL, dH, dM, dA)
     return render(request, 'timeEntry.html', {"ts":ts, "tD": dHistory, "zX": zX})
 
 def profile(request):
     e = Employee.objects.get(user = request.user)
     return render(request, 'profile.html', {"timeS": e})
+
+def index2(request):
+    x = request.POST.keys()
+    y = request.POST.values()
+    u = Employee.objects.get(coreid = request.user.username)
+    p = Project.objects.get(name= "testP")
+    for d, h in request.POST.iteritems():
+        try:
+            inDate = datetime.datetime.strptime(d, '%Y-%m-%d')
+            obj, created = TimeSheet.objects.get_or_create(employee= u, date=inDate, project=p,
+                  defaults={'hours': h})
+            if not created:
+                obj.hours = h
+                obj.save()
+        except ValueError:
+            pass
+    return render(request, 'index2.html', {"timeS": x, "y" : y})
 
 def index(request):
     try:

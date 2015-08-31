@@ -6,26 +6,28 @@
 
 <div class="col-md-4 col-md-offset-4">
 
-<h1>Please enter work history</h1>
+<h2>Please enter work history</h2>
 <br>
 
 <table class="table table-hover">
 	<thead>
       <tr>
+      	<th>Day</th>
         <th>Date</th>
         <th>Hours Worked</th>
       </tr>
     </thead>
     <tbody>
-<form action="{% url 'timetracker:index' %}" method="post">
+<form action="{% url 'timetracker:index2' %}" method="post">
 {% csrf_token %}
-{% for i, j in zX %}
+{% for i, j, k, x in zX %}
 <tr>
+	<td>{{k}}
     <td>{{i}}</td>
-    <td><input class="span1" type="text" name={{i}} value={{j}}></td>
+    <td><input class="span1" type="text" style="width: 25px" name={{x}} value={{j}}></td>
 </tr>
 {% endfor %}
-<input type="submit" value="Submit Time Sheet" />
+<input type="submit" class = "btn btn-success" value="Submit Time Sheet" />
 </form>
     </tbody>
   </table>
