@@ -20,7 +20,7 @@ def teamHistory(request):
         ts |= subTS
     ts = ts.order_by('project', '-hours', '-date', 'employee')
     tT = []
-    tTotal = ts.order_by().values("employee", "project").annotate(dcount= Sum('hours')).order_by('-dcount')
+    tTotal = ts.order_by().values("project", "employee").annotate(dcount= Sum('hours')).order_by('-dcount')
     for r in tTotal:
         tEmployee = Employee.objects.get(id = r['employee'])
         tProject = Project.objects.get(id = r['project'])
