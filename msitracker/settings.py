@@ -45,14 +45,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'timetracker',
     'registration',
-    'crispy_forms',
 )
 
 ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 REGISTRATION_AUTO_LOGIN = True # Automatically log the user in.
-
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
-
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -100,7 +96,6 @@ DATABASES = {}
 DATABASES['default'] =  dj_database_url.config()
 # Enable Connection Pooling
 DATABASES['default']['ENGINE'] = 'django_postgrespool'
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
