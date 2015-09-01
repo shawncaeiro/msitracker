@@ -16,6 +16,8 @@ import psycopg2
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 
+LOGIN_REDIRECT_URL = '/timetracker/profile/'
+
 SITE_ID = 1
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

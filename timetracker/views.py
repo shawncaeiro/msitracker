@@ -88,7 +88,7 @@ def saveTime(request, prjt):
     x = request.POST.keys()
     y = request.POST.values()
     u = Employee.objects.get(coreid = request.user.username)
-    pString = request.POST['projectSelected']
+    pString = prjt
     p = Project.objects.get(name= pString)
     for d, h in request.POST.iteritems():
         try:
