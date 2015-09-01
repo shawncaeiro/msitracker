@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4">
+<div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>Error!</strong> Account not properly linked. Please contact administrator.
+</div>
+<a href="{% url 'timetracker:profile' %}" class = "btn btn-primary">{% trans "Go back to profile" %}</a>
+</div>
+{% endblock %}

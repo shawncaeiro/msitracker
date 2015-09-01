@@ -8,7 +8,8 @@ from timetracker.models import TimeSheet, Employee, Project, User
 import operator
 from django.db.models import Sum
 
-
+def unlinkedAccount(request):
+    return render(request, 'unlinkedAccount.html')
 
 def teamHistory(request):
     e = Employee.objects.get(user = request.user)
@@ -43,6 +44,8 @@ def history(request):
 def timeEntry(request):
     e = Employee.objects.get(user = request.user)
     p = e.projects.all()
+    if p.count() == 0:
+        return render(request, 'unlinkedAccount.html')
     rP = request.POST.keys()
     rP.append(request.POST.values())
     saveC = ""
