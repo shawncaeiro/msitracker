@@ -16,6 +16,8 @@ import psycopg2
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 
+SITE_ID = 1
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -112,8 +114,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-SITE_ID = 1
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 # Static files (CSS, JavaScript, Images)
