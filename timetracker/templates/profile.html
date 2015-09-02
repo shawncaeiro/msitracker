@@ -4,24 +4,26 @@
 {% block content %}
 {{p}}
 <div class="col-md-4 col-md-offset-4">
-{% if aCon == False %}
-<div class="alert alert-danger fade in">
-    <a href="#" class="close" data-dismiss="alert">&times;</a>
-    <strong>Error!</strong> Automatic account linking unsucessful. Please contact administrator.
-</div>
-{% elif aCon == True %}
-<div class="alert alert-success fade in">
-    <a href="#" class="close" data-dismiss="alert">&times;</a>
-    <strong>Success!</strong> Automatic account linking successful.
-</div>
-{% endif %}
+	{% if aCon == False %}
+	<div class="alert alert-danger fade in">
+		<a href="#" class="close" data-dismiss="alert">&times;</a>
+		<strong>Error!</strong> Automatic account linking unsucessful. Please contact administrator.
+	</div>
+	{% elif aCon == True %}
+	<div class="alert alert-success fade in">
+		<a href="#" class="close" data-dismiss="alert">&times;</a>
+		<strong>Success!</strong> Automatic account linking successful.
+	</div>
+	{% endif %}
 
 	<h1>Hello, {{ request.user }}.</h1>
 	<br>
-<a href="{% url 'timetracker:history' %}" class = "btn btn-info">{% trans "My History" %}</a>
-<a href="{% url 'timetracker:timeEntry' %}" class = "btn btn-primary">{% trans "Enter Time" %}</a>
-<a href="{% url 'timetracker:teamHistory' %}" class = "btn btn-info">{% trans "Team History" %}</a>
-<a href="{% url 'timetracker:analysis' %}" class = "btn btn-info">{% trans "Analytics" %}</a>
+	<a href="{% url 'timetracker:timeEntry' %}" class = "btn btn-primary btn-lg">{% trans "Enter Time" %}</a>
+	<br><br>
+	<a href="{% url 'timetracker:analysis' %}" class = "btn btn-info">{% trans "Analytics" %}</a>
+
+	<a href="{% url 'timetracker:teamHistory' %}" class = "btn btn-info">{% trans "Team History" %}</a>
+	<a href="{% url 'timetracker:history' %}" class = "btn btn-info">{% trans "My History" %}</a>
 </div>
 
 {% endblock %}

@@ -158,7 +158,7 @@ def analysis(request):
                 "color": "#4daa4b"
             }
             ]
-    title = "{nameIn} workload".format(nameIn = request.user.username)
+    title = "{nameIn} Workload".format(nameIn = request.user.username)
     json_data = json.dumps(data)
     return render(request, 'analysis.html', {'x':json_data, 'title':title})
 
