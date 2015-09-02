@@ -7,6 +7,7 @@ import datetime
 from timetracker.models import TimeSheet, Employee, Project, User
 import operator
 from django.db.models import Sum
+import json
 
 def unlinkedAccount(request):
     return render(request, 'unlinkedAccount.html')
@@ -124,7 +125,42 @@ def index2(request):
     return render(request, 'index2.html', {"timeS": x, "y" : y})
 
 def home(request):
+    data = {}
+
     return render(request, 'home.html')
+
+def analysis(request):
+    colors = ["#2484c1","#0c6197","#4daa4b","#90c469","#daca61","#e4a14b","#e98125","#cb2121","#830909"]
+    data = []
+    e = Employee.objects.get(user = request.user)
+    ts = TimeSheet.objects.filter(employee = e)
+    tTotal = ts.order_by().values("project").annotate(dcount= Sum('hours')).order_by('-dcount')
+    for i,r in enumerate(tTotal):
+        datum = {}
+        datum["label"] = Project.objects.get(id = r['project']).name
+        datum["value"] = r['dcount']
+        datum["color"] = colors[i]
+        data.append(datum)
+    x = [
+            {
+                "label": "JavaScript",
+                "value": 264131,
+                "color": "#2484c1"
+            },
+            {
+                "label": "Ruby",
+                "value": 218812,
+                "color": "#0c6197"
+            },
+            {
+                "label": "Java",
+                "value": 157618,
+                "color": "#4daa4b"
+            }
+            ]
+    title = "{nameIn} workload".format(nameIn = request.user.username)
+    json_data = json.dumps(data)
+    return render(request, 'analysis.html', {'x':json_data, 'title':title})
 
 def index(request):
     obj, created = Employee.objects.get_or_create(coreid = request.user.username, defaults={'user': request.user})

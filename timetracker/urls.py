@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'/timeEntry', views.timeEntry, name='timeEntry'),
     url(r'/unlinkedAccount', views.unlinkedAccount, name='unlinkedAccount'),
     url(r'/index2', views.index2, name='index2'),
+    url(r'/analysis', views.analysis, name='analysis'),
 
     url(r'', views.profile, name='profile'),
     url(r'accounts/profile/', views.index, name='index'),
