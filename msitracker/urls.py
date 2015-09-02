@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf.urls import patterns, include, url
+from timetracker import views as t_views
 
 
 urlpatterns = patterns('',
@@ -22,4 +23,5 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^msitracker', include('msitracker.urls', namespace="msitracker")),
     url(r'^timetracker', include('timetracker.urls', namespace="timetracker")),
+    url(r'',t_views.home, name= "home")
 )

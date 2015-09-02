@@ -18,7 +18,7 @@
 
 	<h1>Hello, {{ request.user }}.</h1>
 	<br>
-<a href="{% url 'timetracker:history' %}" class = "btn btn-info">{% trans "Time History" %}</a>
+<a href="{% url 'timetracker:history' %}" class = "btn btn-info">{% trans "My History" %}</a>
 <a href="{% url 'timetracker:timeEntry' %}" class = "btn btn-primary">{% trans "Enter Time" %}</a>
 <a href="{% url 'timetracker:teamHistory' %}" class = "btn btn-info">{% trans "Team History" %}</a>
 </div>

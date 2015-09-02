@@ -123,6 +123,9 @@ def index2(request):
             pass
     return render(request, 'index2.html', {"timeS": x, "y" : y})
 
+def home(request):
+    return render(request, 'home.html')
+
 def index(request):
     obj, created = Employee.objects.get_or_create(coreid = request.user.username, defaults={'user': request.user})
     if not created:
