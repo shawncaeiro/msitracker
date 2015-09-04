@@ -19,9 +19,9 @@ def teamHistory(request):
     for sub in m:
         subTS = TimeSheet.objects.filter(employee= sub).exclude(hours = 0)
         ts |= subTS
-    ts = ts.order_by('project', '-hours', '-date', 'employee')
+    ts = ts.order_by('-project', '-hours', '-date', 'employee')
     tT = []
-    tTotal = ts.order_by().values("project", "employee").annotate(dcount= Sum('hours')).order_by('project', '-dcount')
+    tTotal = ts.order_by().values("project", "employee").annotate(dcount= Sum('hours')).order_by('-project', '-dcount')
     for r in tTotal:
         tEmployee = Employee.objects.get(id = r['employee'])
         tProject = Project.objects.get(id = r['project'])
